@@ -2,18 +2,28 @@
 import { ref } from 'vue'
 import type { Pokemon } from '@/types/pokemon'
 
+// REFS
 const id = ref('')
 const name = ref('')
 
+
+// EMITS
+const emit = defineEmits<{
+  'search': [Pokemon | null],
+  'reset': []
+}>()
+
+
+// FUNCTIONS
 const handleSubmit = () => {
-  console.log('Soumission du formulaire avec ID:', id.value, 'et Nom:', name.value)
+  // console.log('Soumission du formulaire avec ID:', id.value, 'et Nom:', name.value)
 
   fetch('https://pokebuildapi.fr/api/v1/pokemon/' + id.value)
     .then((response) => {
       return response.json()
     })
     .then((data) => {
-      console.log('Données reçues:', data)
+      // console.log('Données reçues:', data)
       const results: Pokemon = {
         id: data.id,
         pokedexId: data.pokedexId,
@@ -25,13 +35,13 @@ const handleSubmit = () => {
         //   image: type.image,
         // })),
       }
-      console.log('Résultats formatés:', results)
-      // emit('search', results)
+      // console.log('Résultats formatés:', results)
+      emit('search', results)
     })
     .catch((error) => {
       console.error('Erreur lors de la recherche:', error)
       // error.value = 'Erreur lors de la recherche'
-      // emit('search', null)
+      emit('search', null)
     })
     .finally(() => {
       // loading.value = false
