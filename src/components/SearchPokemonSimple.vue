@@ -7,10 +7,18 @@ import type { Pokemon } from '@/types/pokemon';
 // STATE
 const selectedPokemon = ref<Pokemon | null>(null)
 
+
+// EMITS
+const emit = defineEmits<{
+  'update:name': [string],
+}>()
+
+
 // FUNCTIONS
 const handleSearch = (pokemon: Pokemon | null) => {
   console.log('Pokémon recherché:', pokemon)
   selectedPokemon.value = pokemon
+  if (pokemon?.name) emit('update:name', pokemon.name)
 }
 
 </script>
