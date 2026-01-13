@@ -25,6 +25,7 @@ onMounted(() => {
 
 <template>
   <div>
+    <!-- router.back() -->
     <SearchPokemonSimple @update:name="handleUpdateName" :id="id" />
   </div>
 </template>
