@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUpdated } from 'vue'
 import type { Pokemon } from '@/types/pokemon'
 
 // REFS
-const id = ref('')
-const name = ref('')
+const inputId = ref('')
+const inputName = ref('')
+
+
+// PROPS
+const props = defineProps<{
+  id: string
+}>()
 
 
 // EMITS
@@ -18,12 +24,20 @@ onMounted(() => {
   console.log('SearchPokemon monté')
 })
 
+onUpdated(() => {
+  console.log('SearchPokemon mis à jour')
+  if (props.id) {
+    inputId.value = props.id
+    handleSubmit()
+  }
+})
+
 
 // FUNCTIONS
 const handleSubmit = () => {
   // console.log('Soumission du formulaire avec ID:', id.value, 'et Nom:', name.value)
 
-  fetch('https://pokebuildapi.fr/api/v1/pokemon/' + id.value)
+  fetch('https://pokebuildapi.fr/api/v1/pokemon/' + inputId.value)
     .then((response) => {
       return response.json()
     })
@@ -56,8 +70,8 @@ const handleSubmit = () => {
 
 const handleReset = () => {
   console.log('Réinitialisation du formulaire')
-  id.value = ''
-  name.value = ''
+  inputId.value = ''
+  inputName.value = ''
 }
 
 </script>
@@ -70,13 +84,13 @@ const handleReset = () => {
       <!-- INPUT ID -->
       <div class="form-group">
         <label for="id">ID:</label>
-        <input id="id" v-model="id" type="text" placeholder="Entrez l'ID" />
+        <input id="id" v-model="inputId" type="text" placeholder="Entrez l'ID" />
       </div>
 
       <!-- INPUT NAME -->
       <div class="form-group">
         <label for="name">Nom:</label>
-        <input id="name" v-model="name" type="text" placeholder="Entrez le nom" />
+        <input id="name" v-model="inputName" type="text" placeholder="Entrez le nom" />
       </div>
 
       <div class="form-actions">

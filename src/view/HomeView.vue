@@ -32,7 +32,7 @@ const router = useRouter()
 
                 <router-link to="/search" class="cta-button">Commencer la recherche</router-link>
 
-                <button class="cta-button" @click="() => { router.push({ name: 'search', query: {} }) }">
+                <button class="cta-button" @click="() => { router.push({ name: 'search', params: { id: '9' } }) }">
                     Commencer la recherche
                 </button>
 
