@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { Pokemon } from '@/types/pokemon'
 
 // REFS
@@ -12,6 +12,11 @@ const emit = defineEmits<{
   'search': [Pokemon | null],
   'reset': []
 }>()
+
+
+onMounted(() => {
+  console.log('SearchPokemon monté')
+})
 
 
 // FUNCTIONS
@@ -54,6 +59,7 @@ const handleReset = () => {
   id.value = ''
   name.value = ''
 }
+
 </script>
 
 <template>
