@@ -1,51 +1,27 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router'
-import axios from 'axios'
 import PokemonTeamMultiple from '@/components/PokemonTeamMultiple.vue'
-import type { PokemonTeam } from '@/types/pokemon'
+import { useTeamStore } from '@/stores/teamStore'
 
 
-
+// ROUTER
 const router = useRouter()
 
 
-// REF
-const teams = ref<PokemonTeam[]>();
+// STORE
+// const { teams, apiGetTeams } = useTeamStore()
+const teamStore = useTeamStore()
 
 
 // MOUNTED
 onMounted(() => {
-  apiGetTeams()
+  teamStore.apiGetTeams()
+  // apiGetTeams()
 });
 
 
-// FUNCTION
-function apiGetTeams() {
-  console.log('Appel API pour récupérer les équipes de pokémons'); // TEST
-
-  axios.get('http://localhost:3000/teams')
-    .then(response => {
-      console.log('Données reçues:', response); // TEST
-      teams.value = response.data;
-
-      // teams.value = response.data.map((teamData: any) => {
-      //   return {
-      //     id: teamData.id,
-      //     name: teamData.name,
-      //     subname: teamData.subname,
-      //     pokemons: teamData.pokemons,
-      //     createdAt: teamData.createdAt,
-      //     updatedAt: teamData.updatedAt
-      //   } as PokemonTeam
-      // });
-
-    })
-    .catch(error => {
-      console.error('Erreur:', error)
-      // throw error
-    })
-}
+// FUNCTIONS
 
 
 
@@ -84,7 +60,7 @@ function apiGetTeams() {
 
         <div class="teams-section">
           <h2>Mes équipes</h2>
-          <PokemonTeamMultiple :teams="teams" />
+          <PokemonTeamMultiple :teams="teamStore.teams" />
         </div>
       </div>
     </div>
