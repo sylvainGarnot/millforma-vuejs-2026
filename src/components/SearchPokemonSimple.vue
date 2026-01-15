@@ -41,7 +41,7 @@ const handleReset = () => {
 <template>
   <div>
     <SearchPokemonSimpleSearch @search="handleSearch" @reset="handleReset" :id="id" />
-    <SearchPokemonSimpleResult v-bind:pokemon="selectedPokemon" />
+    <SearchPokemonSimpleResult v-if="selectedPokemon?.id" v-bind:pokemon="selectedPokemon" />
   </div>
 </template>
 

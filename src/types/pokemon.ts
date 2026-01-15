@@ -12,11 +12,11 @@ export interface Pokemon {
 //   image: string
 // }
 
-// export interface PokemonTeam {
-//   id: string
-//   name: string
-//   subname?: string
-//   pokemons: Pokemon[]
-//   createdAt: string
-//   updatedAt?: string
-// }
+export interface PokemonTeam {
+  id: string
+  name: string
+  subname?: string
+  pokemons: Pokemon[]
+  createdAt: string
+  updatedAt?: string
+}
