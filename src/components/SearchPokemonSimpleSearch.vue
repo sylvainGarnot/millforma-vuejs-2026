@@ -22,14 +22,14 @@ const emit = defineEmits<{
 
 onMounted(() => {
   console.log('SearchPokemon monté')
-})
-
-onUpdated(() => {
-  console.log('SearchPokemon mis à jour')
   if (props.id) {
     inputId.value = props.id
     handleSubmit()
   }
+})
+
+onUpdated(() => {
+  console.log('SearchPokemon mis à jour')
 })
 
 
@@ -70,8 +70,7 @@ const handleSubmit = () => {
 
 const handleReset = () => {
   console.log('Réinitialisation du formulaire')
-  inputId.value = ''
-  inputName.value = ''
+  emit('reset')
 }
 
 </script>

@@ -16,6 +16,7 @@ defineProps<{
 
 // EMITS
 const emit = defineEmits<{
+  'update:id': [string],
   'update:name': [string],
 }>()
 
@@ -25,13 +26,21 @@ const handleSearch = (pokemon: Pokemon | null) => {
   console.log('Pokémon recherché:', pokemon)
   selectedPokemon.value = pokemon
   if (pokemon?.name) emit('update:name', pokemon.name)
+  if (pokemon?.id) emit('update:id', String(pokemon.id))
+}
+
+const handleReset = () => {
+  console.log('Réinitialisation du Pokémon sélectionné')
+  selectedPokemon.value = null
+  emit('update:name', '')
+  emit('update:id', '')
 }
 
 </script>
 
 <template>
   <div>
-    <SearchPokemonSimpleSearch @search="handleSearch" :id="id" />
+    <SearchPokemonSimpleSearch @search="handleSearch" @reset="handleReset" :id="id" />
     <SearchPokemonSimpleResult v-bind:pokemon="selectedPokemon" />
   </div>
 </template>

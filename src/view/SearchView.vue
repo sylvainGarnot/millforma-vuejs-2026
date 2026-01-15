@@ -14,6 +14,10 @@ const handleUpdateName = (name: string) => {
   router.push({ query: { name } })
 }
 
+const handleUpdateId = (id: string) => {
+  router.push({ params: { id } })
+}
+
 onMounted(() => {
   console.log('SearchView monté', router.currentRoute.value.params)
   const idParam = router.currentRoute.value.params.id
@@ -26,7 +30,7 @@ onMounted(() => {
 <template>
   <div>
     <!-- router.back() -->
-    <SearchPokemonSimple @update:name="handleUpdateName" :id="id" />
+    <SearchPokemonSimple @update:name="handleUpdateName" @update:id="handleUpdateId" :id="id" />
   </div>
 </template>
 
