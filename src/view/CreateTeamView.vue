@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import PokemonTeamCreate from '@/components/PokemonTeamCreate.vue'
+import { RouterView } from 'vue-router'
+// import AppButtonBack from '@/layout/AppButtonBack.vue'
 </script>
 
 <template>
-  <div>
-    <h1>Créer une équipe</h1>
-    <PokemonTeamCreate />
-  </div>
+  <!-- <AppButtonBack /> -->
+  <h1>Créer une équipe</h1>
+  <RouterView />
 </template>
+
+<style scoped></style>

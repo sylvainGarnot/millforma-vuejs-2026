@@ -17,11 +17,11 @@ const loading = ref(false)
 const error = ref('')
 // const currentTeam = computed(() => teamStore.currentTeam)
 
-// // EMITS
-// const emit = defineEmits<{
-//   'team-created': []
-//   'team-updated': []
-// }>()
+// EMITS
+const emit = defineEmits<{
+  'team-created': []
+  // 'team-updated': []
+}>()
 
 // // FUNCTION
 function submitForm() {
@@ -69,7 +69,7 @@ function createTeam() {
     .then(() => {
       teamNameInput.value = ''
       teamSubnameInput.value = ''
-      // emit('team-created')
+      emit('team-created')
     })
     .catch((error) => {
       error.value = "Erreur lors de la création de l'équipe. Veuillez réessayer."

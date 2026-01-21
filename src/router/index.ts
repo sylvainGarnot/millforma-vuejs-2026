@@ -25,10 +25,28 @@ const router = createRouter({
       name: 'teamDetail',
       component: () => import('@/view/TeamView/_id.vue'),
     },
+
     {
       path: '/create-team',
       name: 'createTeam',
       component: () => import('@/view/CreateTeamView.vue'),
+      children: [
+        {
+          path: '',
+          name: 'createTeamName',
+          component: () => import('@/view/CreateTeamView/NameView.vue'),
+        },
+        {
+          path: 'add-pokemon',
+          name: 'createTeamAddPokemon',
+          component: () => import('@/view/CreateTeamView/AddPokemonView.vue'),
+        },
+        // {
+        //   path: 'resume',
+        //   name: 'createTeamResume',
+        //   component: CreateTeamResumeView,
+        // },
+      ],
     },
   ],
 })
