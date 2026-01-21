@@ -41,7 +41,8 @@ onUpdated(() => {
       </template>
 
       <!-- v-for classique -->
-      <RouterLink v-for="(team, index) in teams" :key="team.id" :to="`/team/${team.id}`" class="team-card">
+      <RouterLink v-for="(team, index) in teams" :key="team.id" :to="{ name: 'team-detail', params: { id: team.id } }"
+        class="team-card">
         <div class="team-header">
           <span>{{ index + 1 }}</span>
           <h3>{{ team.name }}</h3>

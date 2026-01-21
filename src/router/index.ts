@@ -19,6 +19,11 @@ const router = createRouter({
       path: '/search/:id',
       name: 'searchById',
       component: SearchView
+    },
+    {
+      path: '/team/:id',
+      name: 'teamDetail',
+      component: () => import('@/components/PokemonTeamDetail.vue')
     }
   ],
 })

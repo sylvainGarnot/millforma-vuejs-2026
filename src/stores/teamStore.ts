@@ -55,11 +55,35 @@ export const useTeamStore = defineStore('team', () => {
       })
   }
 
+  // Get a single team by ID
+  function apiGetTeamById(teamId: string) {
+    console.log(`Appel API pour récupérer l'équipe de pokémons avec l'ID ${teamId}`); // TEST
+
+    return axios.get(`http://localhost:3000/teams/${teamId}`)
+      .then(response => {
+        console.log('Données reçues:', response); // TEST
+
+        return {
+          id: response.data.id || '',
+          name: response.data.name || '',
+          subname: response.data.subname || '',
+          pokemons: response.data.pokemons || [] as Pokemon[],
+          createdAt: response.data.createdAt || '',
+          updatedAt: response.data.updatedAt || ''
+        } as PokemonTeam;
+      })
+      .catch(error => {
+        console.error('Erreur:', error);
+        throw error;
+      });
+  }
+
 
   return {
     teams,
     teamCount,
     pokemonCount,
-    apiGetTeams
+    apiGetTeams,
+    apiGetTeamById,
   }
 })
