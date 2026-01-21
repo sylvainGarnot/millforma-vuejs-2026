@@ -8,23 +8,23 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/search',
       name: 'search',
-      component: SearchView
+      component: SearchView,
     },
     {
       path: '/search/:id',
       name: 'searchById',
-      component: SearchView
+      component: SearchView,
     },
     {
       path: '/team/:id',
       name: 'teamDetail',
-      component: () => import('@/components/PokemonTeamDetail.vue')
-    }
+      component: () => import('@/view/TeamView/_id.vue'),
+    },
   ],
 })
 

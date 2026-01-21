@@ -1,31 +1,23 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import { useTeamStore } from '@/stores/teamStore'
 import type { PokemonTeam } from '@/types/pokemon'
 
-const route = useRoute()
+const props = defineProps<{
+    id: string | undefined
+}>()
+
 const teamStore = useTeamStore()
-
-
 const team = ref<PokemonTeam>()
 
-
 onMounted(() => {
-    const foundTeam = teamStore.teams.find(t => t.id === route.params.id as string) as PokemonTeam
+    const foundTeam = teamStore.teams.find((t) => t.id === (props.id as string)) as PokemonTeam
     if (foundTeam?.id) {
         team.value = foundTeam as PokemonTeam
-    }
-    else {
+    } else {
         // store get team from API if not found in store
     }
 })
-
-
-
-
-
-
 
 const createdDate = computed(() => {
     if (!team.value) return ''

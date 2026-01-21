@@ -32,7 +32,7 @@ defineProps<{
       </template> -->
 
       <!-- v-for classique -->
-      <RouterLink v-for="(team, index) in teams" :key="team.id" :to="{ name: 'team-detail', params: { id: team.id } }"
+      <RouterLink v-for="(team, index) in teams" :key="team.id" :to="{ name: 'teamDetail', params: { id: team.id } }"
         class="team-card">
         <div class="team-header">
           <span>{{ index + 1 }}</span>
