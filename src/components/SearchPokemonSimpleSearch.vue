@@ -6,19 +6,16 @@ import type { Pokemon } from '@/types/pokemon'
 const inputId = ref('')
 const inputName = ref('')
 
-
 // PROPS
-const props = defineProps<{
-  id: string
-}>()
-
+const props = defineProps({
+  id: String,
+})
 
 // EMITS
 const emit = defineEmits<{
-  'search': [Pokemon | null],
-  'reset': []
+  search: [Pokemon | null]
+  reset: []
 }>()
-
 
 onMounted(() => {
   console.log('SearchPokemon monté')
@@ -31,7 +28,6 @@ onMounted(() => {
 onUpdated(() => {
   console.log('SearchPokemon mis à jour')
 })
-
 
 // FUNCTIONS
 const handleSubmit = () => {
@@ -65,14 +61,12 @@ const handleSubmit = () => {
     .finally(() => {
       // loading.value = false
     })
-
 }
 
 const handleReset = () => {
   console.log('Réinitialisation du formulaire')
   emit('reset')
 }
-
 </script>
 
 <template>

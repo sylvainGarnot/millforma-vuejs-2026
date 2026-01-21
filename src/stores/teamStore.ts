@@ -4,21 +4,27 @@ import axios from 'axios'
 import type { PokemonTeam, Pokemon } from '@/types/pokemon'
 
 export const useTeamStore = defineStore('team', () => {
-  // STATE
+  // STATE (variables réactives)
   const teams = ref<PokemonTeam[]>([])
+  const currentTeam = ref<PokemonTeam | null>(null)
 
   // GETTERS (variables calculées)
   const teamCount = computed(() => {
     return teams.value.length
   })
-
   const pokemonCount = computed(() => {
     return teams.value.reduce((total, team) => total + team.pokemons.length, 0)
+  })
+  const currentTeamPokemonsCount = computed(() => {
+    return currentTeam.value ? currentTeam.value.pokemons.length : 0
   })
 
   // MUTATIONS (SETTERS)
   function setTeams(newTeams: PokemonTeam[]) {
     teams.value = newTeams
+  }
+  function setCurrentTeam(team: PokemonTeam | null) {
+    currentTeam.value = team
   }
 
   // ACTIONS (api calls, logique metier, ...)
@@ -80,6 +86,14 @@ export const useTeamStore = defineStore('team', () => {
       .post('http://localhost:3000/teams', newTeam as PokemonTeam)
       .then((response) => {
         console.log('Équipe créée:', response.data) // TEST
+        setCurrentTeam({
+          id: response.data.id || '',
+          name: response.data.name || '',
+          subname: response.data.subname || '',
+          pokemons: response.data.pokemons as Pokemon[],
+          createdAt: response.data.createdAt || '',
+          updatedAt: response.data.updatedAt || '',
+        } as PokemonTeam)
       })
       .catch((error) => {
         console.error("Erreur lors de la création de l'équipe:", error)
@@ -87,7 +101,24 @@ export const useTeamStore = defineStore('team', () => {
   }
 
   function apiUpdateTeam(updatedTeam: PokemonTeam) {
-    // TODO
+    console.log(`Appel API pour mettre à jour l'équipe de pokémons avec l'ID ${updatedTeam.id}`) // TEST
+
+    return axios
+      .put(`http://localhost:3000/teams/${updatedTeam.id}`, updatedTeam as PokemonTeam)
+      .then((response) => {
+        console.log('Équipe mise à jour:', response.data) // TEST
+        setCurrentTeam({
+          id: response.data.id || '',
+          name: response.data.name || '',
+          subname: response.data.subname || '',
+          pokemons: response.data.pokemons as Pokemon[],
+          createdAt: response.data.createdAt || '',
+          updatedAt: response.data.updatedAt || '',
+        } as PokemonTeam)
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour de l'équipe:", error)
+      })
   }
 
   function apiDeleteTeam(teamId: string) {
@@ -95,9 +126,16 @@ export const useTeamStore = defineStore('team', () => {
   }
 
   return {
+    // state
     teams,
+    currentTeam,
+
+    // getters
     teamCount,
     pokemonCount,
+    currentTeamPokemonsCount,
+
+    // actions
     apiGetTeams,
     apiGetTeamById,
     apiCreateTeam,

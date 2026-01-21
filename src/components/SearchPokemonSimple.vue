@@ -2,24 +2,26 @@
 import { ref } from 'vue'
 import SearchPokemonSimpleSearch from '@/components/SearchPokemonSimpleSearch.vue'
 import SearchPokemonSimpleResult from '@/components/SearchPokemonSimpleResult.vue'
-import type { Pokemon } from '@/types/pokemon';
+import type { Pokemon } from '@/types/pokemon'
 
 // STATE
 const selectedPokemon = ref<Pokemon | null>(null)
 
-
 // PROPS
-defineProps<{
-  id: string
-}>()
-
+const props = defineProps({
+  id: {
+    type: String,
+    default: '',
+    required: false,
+  },
+})
 
 // EMITS
 const emit = defineEmits<{
-  'update:id': [string],
-  'update:name': [string],
+  'update:id': [string]
+  'update:name': [string]
+  'update:result': [Pokemon | null]
 }>()
-
 
 // FUNCTIONS
 const handleSearch = (pokemon: Pokemon | null) => {
@@ -27,6 +29,9 @@ const handleSearch = (pokemon: Pokemon | null) => {
   selectedPokemon.value = pokemon
   if (pokemon?.name) emit('update:name', pokemon.name)
   if (pokemon?.id) emit('update:id', String(pokemon.id))
+
+  if (pokemon) emit('update:result', pokemon)
+  else emit('update:result', null)
 }
 
 const handleReset = () => {
@@ -35,12 +40,11 @@ const handleReset = () => {
   emit('update:name', '')
   emit('update:id', '')
 }
-
 </script>
 
 <template>
   <div>
-    <SearchPokemonSimpleSearch @search="handleSearch" @reset="handleReset" :id="id" />
+    <SearchPokemonSimpleSearch @search="handleSearch" @reset="handleReset" :id="props.id" />
     <SearchPokemonSimpleResult v-if="selectedPokemon?.id" v-bind:pokemon="selectedPokemon" />
   </div>
 </template>

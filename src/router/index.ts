@@ -28,12 +28,12 @@ const router = createRouter({
 
     {
       path: '/create-team',
-      name: 'createTeam',
+      // name: 'createTeamBase',
       component: () => import('@/view/CreateTeamView.vue'),
       children: [
         {
           path: '',
-          name: 'createTeamName',
+          name: 'createTeam',
           component: () => import('@/view/CreateTeamView/NameView.vue'),
         },
         {

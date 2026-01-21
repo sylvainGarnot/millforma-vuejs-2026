@@ -1,13 +1,10 @@
 <script setup lang="ts">
-// import PokemonTeamCreate from '@/components/PokemonTeamCreate.vue'
-// import { useRouter } from 'vue-router'
-
-// const router = useRouter()
+import PokemonTeamUpdateAddPokemon from '@/components/PokemonTeamUpdateAddPokemon.vue'
 </script>
 
 <template>
   <div>
     <h2>Ajout de pokemon à l'équipe</h2>
-    <!-- <PokemonTeamCreate @team-created="router.push({ name: 'createTeamAddPokemon' })" /> -->
+    <PokemonTeamUpdateAddPokemon />
   </div>
 </template>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-// import AppButtonBack from '@/layout/AppButtonBack.vue'
+import AppButtonBack from '@/layout/AppButtonBack.vue'
 </script>
 
 <template>
-  <!-- <AppButtonBack /> -->
+  <AppButtonBack />
   <h1>Créer une équipe</h1>
   <RouterView />
 </template>
