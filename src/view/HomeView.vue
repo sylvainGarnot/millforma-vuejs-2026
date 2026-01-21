@@ -47,6 +47,8 @@ onMounted(() => {
 
         <router-link :to="{ name: 'search' }" class="cta-button">Commencer la recherche</router-link>
 
+        <router-link :to="{ name: 'createTeam' }" class="cta-button">Créer une équipe</router-link>
+
         <button class="cta-button" @click="
           () => {
             router.push({ name: 'searchById', params: { id: '9' } })

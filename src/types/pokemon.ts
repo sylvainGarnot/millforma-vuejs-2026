@@ -4,7 +4,7 @@ export interface Pokemon {
   name: string
   image: string
   sprite: string
-//   types: PokemonType[]
+  //   types: PokemonType[]
 }
 
 // export interface PokemonType {
@@ -13,7 +13,7 @@ export interface Pokemon {
 // }
 
 export interface PokemonTeam {
-  id: string
+  id?: string
   name: string
   subname?: string
   pokemons: Pokemon[]
