@@ -1,30 +1,23 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import PokemonTeamMultiple from '@/components/PokemonTeamMultiple.vue'
 import { useTeamStore } from '@/stores/teamStore'
 
-
 // ROUTER
 const router = useRouter()
-
 
 // STORE
 // const { teams, apiGetTeams } = useTeamStore()
 const teamStore = useTeamStore()
 
-
 // MOUNTED
 onMounted(() => {
   teamStore.apiGetTeams()
   // apiGetTeams()
-});
-
+})
 
 // FUNCTIONS
-
-
-
 </script>
 
 <template>
@@ -54,9 +47,9 @@ onMounted(() => {
 
         <router-link :to="{ name: 'search' }" class="cta-button">Commencer la recherche</router-link>
 
-        <button class="cta-button" @click="() => { router.push({ name: 'searchById', params: { id: '9' } }) }">
+        <!-- <button class="cta-button" @click="() => { router.push({ name: 'searchById', params: { id: '9' } }) }">
           Commencer la recherche
-        </button>
+        </button> -->
 
         <div class="teams-section">
           <h2>Mes équipes</h2>
@@ -117,7 +110,9 @@ onMounted(() => {
   padding: 2rem;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 
 .feature-card:hover {

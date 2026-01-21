@@ -1,44 +1,35 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import type { PokemonTeam } from '@/types/pokemon'
-import { onUpdated, ref } from 'vue';
 
-const props = defineProps<{
+defineProps<{
   teams: PokemonTeam[] | undefined
 }>()
 
+// const test = ref({
+//   title: 'How to do lists in Vue',
+//   author: 'Jane Doe',
+//   publishedAt: '2016-04-10',
+// })
 
-const test = ref({
-  title: 'How to do lists in Vue',
-  author: 'Jane Doe',
-  publishedAt: '2016-04-10'
-})
-
-
-
-onUpdated(() => {
-  console.log('Props teams mises à jour:', props.teams); // TEST
-});
-
-
+// onUpdated(() => {
+//   console.log('Props teams mises à jour:', props.teams) // TEST
+// })
 </script>
 
 <template>
   <div class="teams-container">
-    <div v-if="teams?.length === 0" class="empty-message">
-      Aucune équipe créée
-    </div>
+    <div v-if="teams?.length === 0" class="empty-message">Aucune équipe créée</div>
     <div v-else class="teams-grid">
-
       <!-- v-for avec un objet : -->
-      <div v-for="(value, key, index) in test" :key="index">
+      <!-- <div v-for="(value, key, index) in test" :key="index">
         <span>{{ value }} - {{ key }} - {{ index }}</span>
-      </div>
+      </div> -->
 
       <!-- v-for avec une portée : -->
-      <template v-for="n in 10">
+      <!-- <template v-for="n in 10">
         {{ n + 10 }} - itération
-      </template>
+      </template> -->
 
       <!-- v-for classique -->
       <RouterLink v-for="(team, index) in teams" :key="team.id" :to="{ name: 'team-detail', params: { id: team.id } }"
