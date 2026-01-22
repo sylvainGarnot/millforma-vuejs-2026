@@ -11,15 +11,24 @@ const id = ref<string>('')
 
 // FUNCTIONS
 const handleUpdateName = (name: string) => {
+  if (!name) {
+    router.push({ name: 'search' })
+    id.value = ''
+    return
+  }
   router.push({ query: { name } })
 }
 
 const handleUpdateId = (id: string) => {
+  if (!id) {
+    router.push({ name: 'search' })
+    return
+  }
   router.push({ params: { id } })
 }
 
 onMounted(() => {
-  console.log('SearchView monté', router.currentRoute.value.params)
+  console.log('SearchView monté', router.currentRoute.value.params.id)
   const idParam = router.currentRoute.value.params.id
   if (idParam) id.value = idParam as string
 })

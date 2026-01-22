@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, onUpdated } from 'vue'
+import { ref, onMounted, onUpdated, watch } from 'vue'
 import type { Pokemon } from '@/types/pokemon'
+import AppInputSpecial from '@/layout/AppInputSpecial.vue'
 
 // REFS
 const inputId = ref('')
@@ -8,7 +9,11 @@ const inputName = ref('')
 
 // PROPS
 const props = defineProps({
-  id: String,
+  id: {
+    type: String,
+    default: '',
+    required: false,
+  },
 })
 
 // EMITS
@@ -18,16 +23,23 @@ const emit = defineEmits<{
 }>()
 
 onMounted(() => {
-  console.log('SearchPokemon monté')
-  if (props.id) {
-    inputId.value = props.id
-    handleSubmit()
-  }
+  console.log('HOOK UPDATED - SearchPokemon monté', props.id)
 })
 
 onUpdated(() => {
-  console.log('SearchPokemon mis à jour')
+  console.log('HOOK UPDATED - SearchPokemon mis à jour', props.id)
 })
+
+watch(
+  () => props.id,
+  (newId) => {
+    console.log('WATCHER - props.id changé:', newId)
+    inputId.value = newId
+    handleSubmit()
+  }
+)
+
+
 
 // FUNCTIONS
 const handleSubmit = () => {
@@ -65,6 +77,8 @@ const handleSubmit = () => {
 
 const handleReset = () => {
   console.log('Réinitialisation du formulaire')
+  inputId.value = ''
+  inputName.value = ''
   emit('reset')
 }
 </script>
@@ -75,16 +89,10 @@ const handleReset = () => {
       <h2>Formulaire</h2>
 
       <!-- INPUT ID -->
-      <div class="form-group">
-        <label for="id">ID:</label>
-        <input id="id" v-model="inputId" type="text" placeholder="Entrez l'ID" />
-      </div>
+      <AppInputSpecial label="ID" id="id" v-model="inputId" placeholder="Entrez l'ID" type="text" />
 
       <!-- INPUT NAME -->
-      <div class="form-group">
-        <label for="name">Nom:</label>
-        <input id="name" v-model="inputName" type="text" placeholder="Entrez le nom" />
-      </div>
+      <AppInputSpecial label="Nom" id="name" v-model="inputName" placeholder="Entrez le nom" type="text" />
 
       <div class="form-actions">
         <button type="submit" class="btn btn-primary">Soumettre</button>
@@ -93,7 +101,6 @@ const handleReset = () => {
     </form>
   </div>
 </template>
-
 <style scoped>
 .form-container {
   max-width: 400px;
