@@ -7,14 +7,9 @@ import type { Pokemon } from '@/types/pokemon'
 // STATE
 const selectedPokemon = ref<Pokemon | null>(null)
 
-// PROPS
-const props = defineProps({
-  id: {
-    type: String,
-    default: '',
-    required: false,
-  },
-})
+// provide('getTest', '19')
+
+
 
 // EMITS
 const emit = defineEmits<{
@@ -44,7 +39,7 @@ const handleReset = () => {
 
 <template>
   <div>
-    <SearchPokemonSimpleSearch @search="handleSearch" @reset="handleReset" :id="props.id" />
+    <SearchPokemonSimpleSearch @search="handleSearch" @reset="handleReset" />
     <SearchPokemonSimpleResult v-if="selectedPokemon?.id" v-bind:pokemon="selectedPokemon" />
   </div>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUpdated, watch } from 'vue'
+import { ref, onMounted, onUpdated, watch, inject } from 'vue'
 import type { Pokemon } from '@/types/pokemon'
 import AppInputSpecial from '@/layout/AppInputSpecial.vue'
 
@@ -7,14 +7,9 @@ import AppInputSpecial from '@/layout/AppInputSpecial.vue'
 const inputId = ref('')
 const inputName = ref('')
 
-// PROPS
-const props = defineProps({
-  id: {
-    type: String,
-    default: '',
-    required: false,
-  },
-})
+// INJECT
+const id = inject('getCurrentId')
+
 
 // EMITS
 const emit = defineEmits<{
@@ -23,18 +18,22 @@ const emit = defineEmits<{
 }>()
 
 onMounted(() => {
-  console.log('HOOK UPDATED - SearchPokemon monté', props.id)
+  console.log('HOOK MOUNTED - SearchPokemon monté', id)
+  // if (id) {
+  //   inputId.value = id._value as string
+  //   handleSubmit()
+  // }
 })
 
 onUpdated(() => {
-  console.log('HOOK UPDATED - SearchPokemon mis à jour', props.id)
+  console.log('HOOK UPDATED - SearchPokemon mis à jour', id)
 })
 
 watch(
-  () => props.id,
-  (newId) => {
-    console.log('WATCHER - props.id changé:', newId)
-    inputId.value = newId
+  id,
+  (newIdValue) => {
+    console.log('WATCHER - inject id changé:', newIdValue)
+    inputId.value = newIdValue as string
     handleSubmit()
   }
 )
@@ -43,7 +42,7 @@ watch(
 
 // FUNCTIONS
 const handleSubmit = () => {
-  // console.log('Soumission du formulaire avec ID:', id.value, 'et Nom:', name.value)
+  console.log('Soumission du formulaire avec ID:', id.value, 'et Nom:', name.value)
 
   fetch('https://pokebuildapi.fr/api/v1/pokemon/' + inputId.value)
     .then((response) => {

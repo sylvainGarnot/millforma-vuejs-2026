@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, provide } from 'vue'
 import SearchPokemonSimple from '@/components/SearchPokemonSimple.vue'
 import { useRouter } from 'vue-router'
 
@@ -7,6 +7,12 @@ const router = useRouter()
 
 // REFS
 const id = ref<string>('')
+
+
+// PROVIDED FUNCTIONS
+// provide('getCurrentId', () => id.value)
+provide('getCurrentId', id)
+
 
 
 // FUNCTIONS
@@ -39,7 +45,7 @@ onMounted(() => {
 <template>
   <div>
     <!-- router.back() -->
-    <SearchPokemonSimple @update:name="handleUpdateName" @update:id="handleUpdateId" :id="id" />
+    <SearchPokemonSimple @update:name="handleUpdateName" @update:id="handleUpdateId" />
   </div>
 </template>
 
