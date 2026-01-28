@@ -1,10 +1,30 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import type { PokemonTeam } from '@/types/pokemon'
 
-defineProps<{
+const props = defineProps<{
   teams: PokemonTeam[] | undefined
 }>()
+
+const page = ref(1)
+const itemsPerPage = ref(2)
+
+const paginationLength = computed(() => {
+  if (!props.teams) return 0
+  return Math.ceil(props.teams.length / itemsPerPage.value)
+})
+
+const teamsPaginated = computed(() => {
+  if (!props.teams) return []
+  const start = (page.value - 1) * itemsPerPage.value
+  return props.teams.slice(start, start + itemsPerPage.value)
+})
+
+
+function handleNextEvent() {
+  console.log('Next page:', page.value + 1)
+}
 
 // const test = ref({
 //   title: 'How to do lists in Vue',
@@ -32,8 +52,8 @@ defineProps<{
       </template> -->
 
       <!-- v-for classique -->
-      <RouterLink v-for="(team, index) in teams" :key="team.id" :to="{ name: 'teamDetail', params: { id: team.id } }"
-        class="team-card">
+      <RouterLink v-for="(team, index) in teamsPaginated" :key="team.id"
+        :to="{ name: 'teamDetail', params: { id: team.id } }" class="team-card">
         <div class="team-header">
           <span>{{ index + 1 }}</span>
           <h3>{{ team.name }}</h3>
@@ -44,6 +64,11 @@ defineProps<{
           </div>
         </div>
       </RouterLink>
+
+      <v-pagination v-model="page" :length="paginationLength" :total-visible="4" next-icon="mdi-menu-right"
+        prev-icon="mdi-menu-left" @prev="handleNextEvent" rounded="circle">
+        <template #next>tesfdsfgds</template>
+      </v-pagination>
     </div>
   </div>
 </template>
