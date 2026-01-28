@@ -37,6 +37,8 @@ export const useTeamStore = defineStore('team', () => {
   }
 
   // ACTIONS (api calls, logique metier, ...)
+
+  // json server requête paginé : version beta seulement
   function apiGetTeams(page: number = 1, perPage: number = 2) {
     console.log(`Appel API pour récupérer les équipes de pokémons (page ${page}, ${perPage} par page)`) // TEST
 
@@ -81,7 +83,6 @@ export const useTeamStore = defineStore('team', () => {
 
     return axios
       .get(`http://localhost:3000/teams/${teamId}`)
-      // .get(`http://localhost:3000/teams?name_like=${teamId}`)
       .then((response) => {
         console.log('Données reçues:', response) // TEST
 
@@ -98,6 +99,37 @@ export const useTeamStore = defineStore('team', () => {
       })
       .catch((error) => {
         console.error('Erreur:', error)
+        throw error
+      })
+  }
+
+  // json server : version 0.17 seulement
+  function apiGetPokemonTeamsAutocomplete(query: string) {
+    // console.log(`Appel API pour l'autocomplétion des équipes de pokémons avec la requête "${query}"`) // TEST
+
+    return axios
+      .get('http://localhost:3000/teams', {
+        params: {
+          q: query,
+          _limit: 5,
+        },
+      })
+      .then((response) => {
+        console.log('Données reçues pour l\'autocomplétion:', response) // TEST
+
+        return response.data.map((teamData: PokemonTeam) => {
+          return {
+            id: teamData.id || '',
+            name: teamData.name || '',
+            subname: teamData.subname || '',
+            pokemons: teamData.pokemons || ([] as Pokemon[]),
+            createdAt: teamData.createdAt || '',
+            updatedAt: teamData.updatedAt || '',
+          } as PokemonTeam
+        })
+      })
+      .catch((error) => {
+        console.error('Erreur lors de l\'autocomplétion:', error)
         throw error
       })
   }
@@ -166,6 +198,7 @@ export const useTeamStore = defineStore('team', () => {
     // actions
     apiGetTeams,
     apiGetTeamById,
+    apiGetPokemonTeamsAutocomplete,
     apiCreateTeam,
     apiUpdateTeam,
     apiDeleteTeam,

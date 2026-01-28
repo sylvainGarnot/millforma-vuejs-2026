@@ -2,7 +2,9 @@
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import PokemonTeamMultiple from '@/components/PokemonTeamMultiple.vue'
+import PokemonTeamSearchAutocomplete from '@/components/PokemonTeamSearchAutocomplete.vue'
 import { useTeamStore } from '@/stores/teamStore'
+import type { PokemonTeam } from '@/types/pokemon'
 
 // ROUTER
 const router = useRouter()
@@ -18,6 +20,11 @@ onMounted(() => {
 })
 
 // FUNCTIONS
+function handleTeamSelect(team: PokemonTeam | null) {
+  if (team) {
+    router.push({ name: 'teamDetail', params: { id: team.id } })
+  }
+}
 </script>
 
 <template>
@@ -43,6 +50,10 @@ onMounted(() => {
             <h3>Rapide</h3>
             <p>Accédez aux données en temps réel</p>
           </div>
+        </div>
+
+        <div class="search-section">
+          <PokemonTeamSearchAutocomplete @select="handleTeamSelect" />
         </div>
 
         <router-link :to="{ name: 'search' }" class="cta-button">Commencer la recherche</router-link>
@@ -244,5 +255,12 @@ onMounted(() => {
   color: white;
   margin-bottom: 1.5rem;
   font-size: 1.8rem;
+}
+
+.search-section {
+  margin-bottom: 2rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

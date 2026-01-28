@@ -37,8 +37,7 @@ function handlePageChange(newPage: number) {
       </RouterLink>
 
       <v-pagination :modelValue="teamStore.teamsPaginationCurrent" @update:modelValue="handlePageChange"
-        :length="teamStore.teams_pagination_pages" :total-visible="4" next-icon="mdi-menu-right"
-        prev-icon="mdi-menu-left" rounded="circle">
+        :length="teamStore.teams_pagination_pages" :total-visible="4" rounded="circle">
       </v-pagination>
     </div>
   </div>
