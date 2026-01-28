@@ -1,59 +1,30 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import type { PokemonTeam } from '@/types/pokemon'
+import { useTeamStore } from '@/stores/teamStore'
 
-const props = defineProps<{
+
+const teamStore = useTeamStore()
+
+defineProps<{
   teams: PokemonTeam[] | undefined
 }>()
 
-const page = ref(1)
-const itemsPerPage = ref(2)
 
-const paginationLength = computed(() => {
-  if (!props.teams) return 0
-  return Math.ceil(props.teams.length / itemsPerPage.value)
-})
-
-const teamsPaginated = computed(() => {
-  if (!props.teams) return []
-  const start = (page.value - 1) * itemsPerPage.value
-  return props.teams.slice(start, start + itemsPerPage.value)
-})
-
-
-function handleNextEvent() {
-  console.log('Next page:', page.value + 1)
+function handlePageChange(newPage: number) {
+  console.log('handlePageChange - page:', newPage) // TEST
+  teamStore.apiGetTeams(newPage, 2)
 }
 
-// const test = ref({
-//   title: 'How to do lists in Vue',
-//   author: 'Jane Doe',
-//   publishedAt: '2016-04-10',
-// })
-
-// onUpdated(() => {
-//   console.log('Props teams mises à jour:', props.teams) // TEST
-// })
 </script>
 
 <template>
   <div class="teams-container">
     <div v-if="teams?.length === 0" class="empty-message">Aucune équipe créée</div>
     <div v-else class="teams-grid">
-      <!-- v-for avec un objet : -->
-      <!-- <div v-for="(value, key, index) in test" :key="index">
-        <span>{{ value }} - {{ key }} - {{ index }}</span>
-      </div> -->
 
-      <!-- v-for avec une portée : -->
-      <!-- <template v-for="n in 10">
-        {{ n + 10 }} - itération
-      </template> -->
-
-      <!-- v-for classique -->
-      <RouterLink v-for="(team, index) in teamsPaginated" :key="team.id"
-        :to="{ name: 'teamDetail', params: { id: team.id } }" class="team-card">
+      <RouterLink v-for="(team, index) in teams" :key="team.id" :to="{ name: 'teamDetail', params: { id: team.id } }"
+        class="team-card">
         <div class="team-header">
           <span>{{ index + 1 }}</span>
           <h3>{{ team.name }}</h3>
@@ -65,9 +36,9 @@ function handleNextEvent() {
         </div>
       </RouterLink>
 
-      <v-pagination v-model="page" :length="paginationLength" :total-visible="4" next-icon="mdi-menu-right"
-        prev-icon="mdi-menu-left" @prev="handleNextEvent" rounded="circle">
-        <template #next>tesfdsfgds</template>
+      <v-pagination :modelValue="teamStore.teamsPaginationCurrent" @update:modelValue="handlePageChange"
+        :length="teamStore.teams_pagination_pages" :total-visible="4" next-icon="mdi-menu-right"
+        prev-icon="mdi-menu-left" rounded="circle">
       </v-pagination>
     </div>
   </div>

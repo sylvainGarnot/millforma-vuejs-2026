@@ -7,6 +7,12 @@ export const useTeamStore = defineStore('team', () => {
   // STATE (variables réactives)
   const teams = ref<PokemonTeam[]>([])
   const currentTeam = ref<PokemonTeam | null>(null)
+  
+  // Pagination state
+  const teams_pagination_pages = ref(0)
+  const teams_pagination_items = ref(0)
+  const teams_pagination_next = ref(0)
+  const teams_pagination_prev = ref(0)
 
   // GETTERS (variables calculées)
   const teamCount = computed(() => {
@@ -18,6 +24,9 @@ export const useTeamStore = defineStore('team', () => {
   const currentTeamPokemonsCount = computed(() => {
     return currentTeam.value ? currentTeam.value.pokemons.length : 0
   })
+  const teamsPaginationCurrent = computed(() => {
+    return teams_pagination_prev.value ? teams_pagination_prev.value + 1 : teams_pagination_next.value ? teams_pagination_next.value - 1 : 1
+  })
 
   // MUTATIONS (SETTERS)
   function setTeams(newTeams: PokemonTeam[]) {
@@ -28,16 +37,27 @@ export const useTeamStore = defineStore('team', () => {
   }
 
   // ACTIONS (api calls, logique metier, ...)
-  function apiGetTeams() {
-    console.log('Appel API pour récupérer les équipes de pokémons') // TEST
+  function apiGetTeams(page: number = 1, perPage: number = 2) {
+    console.log(`Appel API pour récupérer les équipes de pokémons (page ${page}, ${perPage} par page)`) // TEST
 
-    axios
-      .get('http://localhost:3000/teams')
+    return axios
+      .get('http://localhost:3000/teams', {
+        params: {
+          _page: page,
+          _per_page: perPage
+        }
+      })
       .then((response) => {
         console.log('Données reçues:', response) // TEST
 
+        const data = response.data.data || response.data
+        teams_pagination_pages.value = response.data.pages || 1
+        teams_pagination_items.value = response.data.items || data.length
+        teams_pagination_next.value = response.data.next || null
+        teams_pagination_prev.value = response.data.prev || null
+
         setTeams(
-          response.data.map((teamData: PokemonTeam) => {
+          data.map((teamData: PokemonTeam) => {
             return {
               id: teamData.id || '',
               name: teamData.name || '',
@@ -51,7 +71,7 @@ export const useTeamStore = defineStore('team', () => {
       })
       .catch((error) => {
         console.error('Erreur:', error)
-        // throw error
+        throw error
       })
   }
 
@@ -129,11 +149,16 @@ export const useTeamStore = defineStore('team', () => {
     // state
     teams,
     currentTeam,
+    teams_pagination_items,
+    teams_pagination_pages,
+    teams_pagination_next,
+    teams_pagination_prev,
 
     // getters
     teamCount,
     pokemonCount,
     currentTeamPokemonsCount,
+    teamsPaginationCurrent,
 
     // actions
     apiGetTeams,
