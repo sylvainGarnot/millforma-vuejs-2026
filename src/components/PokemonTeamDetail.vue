@@ -16,6 +16,9 @@ onMounted(() => {
         team.value = foundTeam as PokemonTeam
     } else {
         // store get team from API if not found in store
+        teamStore.apiGetTeamById(props.id as string).then((fetchedTeam) => {
+            team.value = fetchedTeam
+        })
     }
 })
 

@@ -81,17 +81,20 @@ export const useTeamStore = defineStore('team', () => {
 
     return axios
       .get(`http://localhost:3000/teams/${teamId}`)
+      // .get(`http://localhost:3000/teams?name_like=${teamId}`)
       .then((response) => {
         console.log('Données reçues:', response) // TEST
 
-        return {
+        setCurrentTeam({
           id: response.data.id || '',
           name: response.data.name || '',
           subname: response.data.subname || '',
           pokemons: response.data.pokemons || ([] as Pokemon[]),
           createdAt: response.data.createdAt || '',
           updatedAt: response.data.updatedAt || '',
-        } as PokemonTeam
+        } as PokemonTeam)
+
+        return currentTeam.value as PokemonTeam
       })
       .catch((error) => {
         console.error('Erreur:', error)
